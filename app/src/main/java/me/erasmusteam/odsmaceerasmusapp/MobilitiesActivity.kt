@@ -1,10 +1,8 @@
 package me.erasmusteam.odsmaceerasmusapp
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.ImageButton
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBar
@@ -14,13 +12,20 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
+import me.erasmusteam.odsmaceerasmusapp.objects.ActionBarDetails
+import me.erasmusteam.odsmaceerasmusapp.fragments.WebViewFragment
+import me.erasmusteam.odsmaceerasmusapp.interfaces.IExpandableListHolder
+import me.erasmusteam.odsmaceerasmusapp.interfaces.IFragmentHolder
 
-class MobilitiesActivity : AppCompatActivity() {
+class MobilitiesActivity : AppCompatActivity(), IFragmentHolder, IExpandableListHolder {
 
     lateinit var toggle : ActionBarDrawerToggle
     var header_username : String? = null
+    var jwt_token : String? = ""
+    var is_admin : Boolean? = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.mobilities)
@@ -31,12 +36,17 @@ class MobilitiesActivity : AppCompatActivity() {
         }
 
         val bundle : Bundle? = intent.extras
-        val jwt_token : String? = bundle?.getString("jwt_token")
-        val is_admin : String? = bundle?.getString("is_admin")
+        jwt_token = bundle?.getString("jwt_token")
+        is_admin = bundle?.getBoolean("is_admin")
         header_username = bundle?.getString("username")
+
+        val mobility_title : String = bundle?.getString("mobility_title")!!
+        val mobility_endpoint : String = bundle?.getString("mobility_endpoint")!!
 
         val drawerLayout : DrawerLayout = findViewById(R.id.main)
         val navView : NavigationView = findViewById(R.id.nav_view)
+
+        findViewById<TextView>(R.id.mobilitiesTxt).text = mobility_title
 
         toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
         drawerLayout.addDrawerListener(toggle)
@@ -51,68 +61,17 @@ class MobilitiesActivity : AppCompatActivity() {
         actionBar?.setDisplayShowHomeEnabled(true)
         actionBar?.setDisplayHomeAsUpEnabled(true)
 
-        navView.setNavigationItemSelectedListener {
+        setupExpandableListView(this, this@MobilitiesActivity, jwt_token!!, is_admin!!, header_username!!)
 
-            when(it.itemId){
+        val webViewFragment: WebViewFragment = WebViewFragment.newInstance("https://sites.google.com/es-loule.edu.pt/mace/mobilities/$mobility_endpoint")
+        addFragmentToActivity(R.id.fragment_container_view, webViewFragment, supportFragmentManager)
 
-                R.id.nav_project -> {
+    }
 
-                    val intent : Intent = Intent(this, ProjectsActivity::class.java)
+    override fun onRestart() {
+        super.onRestart()
 
-                    intent.putExtra("jwt_token", jwt_token)
-                    intent.putExtra("is_admin", is_admin)
-                    intent.putExtra("username", header_username)
-
-                    startActivity(intent)
-
-                }
-                R.id.nav_ods -> {
-
-                    val intent : Intent = Intent(this, OdsActivity::class.java)
-
-                    intent.putExtra("jwt_token", jwt_token)
-                    intent.putExtra("is_admin", is_admin)
-                    intent.putExtra("username", header_username)
-
-                    startActivity(intent)
-
-                }
-                R.id.nav_mobilities -> {}
-                R.id.nav_activities -> {
-
-                    val intent : Intent = Intent(this, ActivitiesActivity::class.java)
-                    //intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                    intent.putExtra("jwt_token", jwt_token)
-                    intent.putExtra("is_admin", is_admin)
-                    intent.putExtra("username", header_username)
-
-                    startActivity(intent)
-
-                }
-                R.id.nav_settings -> {
-                    val intent : Intent = Intent(this, SettingsActivity::class.java)
-                    //intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                    intent.putExtra("jwt_token", jwt_token)
-                    intent.putExtra("is_admin", is_admin)
-                    intent.putExtra("username", header_username)
-
-                    startActivity(intent)
-                }
-                R.id.nav_login -> {
-
-                    val intent : Intent = Intent(this, MainActivity::class.java)
-
-                    startActivity(intent)
-
-                }
-
-
-            }
-
-            true
-
-        }
-
+        setupExpandableListView(this, this@MobilitiesActivity, jwt_token!!, is_admin!!, header_username!!)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

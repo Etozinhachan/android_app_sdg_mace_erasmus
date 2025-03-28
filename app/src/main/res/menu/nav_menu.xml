@@ -10,10 +10,15 @@
         android:icon="@drawable/baseline_home_24"
         android:title="Project"/>
 
+    <item
+        android:id="@+id/nav_partners"
+        android:title="Partners"
+        />
+
 
     <item
         android:id="@+id/nav_ods"
-        android:title="Ods"/>
+        android:title="SDG"/>
     <!--android:icon="@drawable/baseline_message_24"-->
 
 
@@ -32,35 +37,18 @@
         android:icon="@drawable/baseline_settings_24"
         android:title="Settings"/>
 
-    <item android:title="profile">
+    <item android:title="User">
 
         <menu>
 
             <item
                 android:id="@+id/nav_login"
                 android:icon="@drawable/baseline_login_24"
-                android:title="Login"/>
+                android:title="Login Page"/>
 
         </menu>
 
     </item>
 
-    <!--<item android:title="comunicate">
-
-        <menu>
-
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/baseline_screen_share_24"
-                android:title="Share"/>
-
-            <item
-                android:id="@+id/nav_rate_us"
-                android:icon="@drawable/baseline_rate_review_24"
-                android:title="Rate Us"/>
-
-        </menu>
-
-    </item>-->
 
 </menu>

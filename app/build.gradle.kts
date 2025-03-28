@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
 }
 
 android {
@@ -9,12 +10,15 @@ android {
 
     defaultConfig {
         applicationId = "me.erasmusteam.odsmaceerasmusapp"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
-        versionName = "1.0"
+        versionName = "0.4.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        val nameAPk = "OdsMaceErasmusApp-V${versionName}"
+        project.setProperty("archivesBaseName", nameAPk)
     }
 
     buildTypes {
@@ -33,6 +37,9 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -42,10 +49,24 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.kotlinx.coroutines.android)
 
     implementation(libs.volley)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    implementation(libs.imageslideshow)
+
+    implementation(libs.gson)
+
+    implementation(libs.play.services.maps)
+
+    implementation(libs.androidx.webkit)
+
+    implementation(libs.itextg)
+
+    implementation(libs.glide)
+    annotationProcessor(libs.compiler)
 }

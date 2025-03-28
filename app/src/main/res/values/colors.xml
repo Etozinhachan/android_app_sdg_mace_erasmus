@@ -2,7 +2,14 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="blue">#FF0099FF</color>
-    <color name="red">#FFFF0000</color>
+    <color name="blue">#0099FF</color>
+    <color name="red">#ff4a4a</color>
+    <color name="green">#4aff65</color>
     <color name="underline">#BD88B8</color>
+    <color name="european_blue">#003399</color>
+    <color name="european_yellow">#FFCC00</color>
+    <color name="mace_dark_blue">#FF69d0e3</color>
+    <color name="mace_light_blue">#FFa5e0e8</color>
+    <color name="mace_dark_green">#FF81c37c</color>
+    <color name="mace_light_green">#FF8ccb85</color>
 </resources>

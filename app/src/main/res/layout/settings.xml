@@ -6,7 +6,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SettingsActivity">
+    tools:context=".SettingsActivity"
+    android:fitsSystemWindows="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/parentConstraint"
@@ -39,25 +40,29 @@
                     android:textAlignment="center"
                     android:textSize="30sp" />
 
-                <Switch
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/switchMode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Switch to X Mode"
+                    android:text="Switch to Dark Mode"
                     android:textSize="16sp" />
+                <Spinner
+                    android:id="@+id/langSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dropdown"
+                    android:layout_marginTop="10dp"/>
+
+                <!--<Button
+                    android:id="@+id/changeDarkMode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Change Dark Mode Type"/>-->
             </LinearLayout>
         </ScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        app:headerLayout="@layout/nav_header"
-        app:menu="@menu/nav_menu"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        />
+    <include layout="@layout/navigation_view_with_expandable_list_view"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>

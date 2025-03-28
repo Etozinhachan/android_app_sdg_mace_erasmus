@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="SDGs">
+        <item>1. No Poverty</item>
+        <item>2. Zero Hunger</item>
+        <item>3. Good Health And Well-Being</item>
+        <item>4. Quality Education</item>
+        <item>5. Gender Equality</item>
+        <item>6. Clean Water And Sanitation</item>
+        <item>7. Affordable And Clean Energy</item>
+        <item>8. Decent Work And Economic Growth</item>
+        <item>9. Industry, Innovation And Infrastructure</item>
+        <item>10. Reduced Inequalities</item>
+        <item>11. Sustainable Cities And Communities</item>
+        <item>12. Responsible Consumption and Production</item>
+        <item>13. Climate Action</item>
+        <item>14. Life Below Water</item>
+        <item>15. Life On Land</item>
+        <item>16. Peace, Justice And Strong Institutions</item>
+        <item>17. Partnerships For The Goals</item>
+    </array>
+    <array name="Countries">
+        <item>Portugal</item>
+        <item>Spain</item>
+        <item>Poland</item>
+        <item>Sweden</item>
+    </array>
+</resources>

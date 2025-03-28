@@ -1,26 +1,41 @@
 package me.erasmusteam.odsmaceerasmusapp
 
-import android.content.Intent
 import android.os.Bundle
+import android.os.Environment
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.ImageButton
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RawRes
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.navigation.NavigationView
+import me.erasmusteam.odsmaceerasmusapp.adapters.SDGAdapter
+import me.erasmusteam.odsmaceerasmusapp.data.SDGData
+import me.erasmusteam.odsmaceerasmusapp.interfaces.IExpandableListHolder
+import me.erasmusteam.odsmaceerasmusapp.objects.ActionBarDetails
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.InputStream
+import java.io.OutputStream
 
-class OdsActivity : AppCompatActivity() {
+
+class OdsActivity : AppCompatActivity(), IExpandableListHolder {
 
     lateinit var toggle : ActionBarDrawerToggle
     var header_username : String? = null
+    var jwt_token : String? = ""
+    var is_admin : Boolean? = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.ods)
@@ -32,9 +47,42 @@ class OdsActivity : AppCompatActivity() {
 
 
         val bundle : Bundle? = intent.extras
-        val jwt_token : String? = bundle?.getString("jwt_token")
-        val is_admin : String? = bundle?.getString("is_admin")
+        jwt_token = bundle?.getString("jwt_token")
+        is_admin = bundle?.getBoolean("is_admin")
         header_username = bundle?.getString("username")
+
+        /*
+
+        val url = "https://sdgs.un.org/sites/default/files/2023-08/SDG_report_2023_infographics_Goal%201.jpg"
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            startActivity(intent)
+
+         */
+
+        val SDGsRecyclerView: RecyclerView = findViewById(R.id.goalsRecyclerView)
+
+        val SDGs = listOf(
+            SDGData(R.drawable.e_web_goal_01, R.raw.ways_to_self_soothe),
+            SDGData(R.drawable.e_web_goal_02, R.raw.ways_to_self_soothe),
+            SDGData(R.drawable.e_web_goal_03, R.raw.ways_to_self_soothe),
+            SDGData(R.drawable.e_web_goal_04, R.raw.ways_to_self_soothe),
+            SDGData(R.drawable.e_web_goal_05, R.raw.ways_to_self_soothe),
+            SDGData(R.drawable.e_web_goal_06, R.raw.ways_to_self_soothe),
+            SDGData(R.drawable.e_web_goal_07, R.raw.ways_to_self_soothe),
+            SDGData(R.drawable.e_web_goal_08, R.raw.ways_to_self_soothe),
+            SDGData(R.drawable.e_web_goal_09, R.raw.ways_to_self_soothe),
+            SDGData(R.drawable.e_web_goal_10, R.raw.ways_to_self_soothe),
+            SDGData(R.drawable.e_web_goal_11, R.raw.ways_to_self_soothe),
+            SDGData(R.drawable.e_web_goal_12, R.raw.ways_to_self_soothe),
+            SDGData(R.drawable.e_web_goal_13, R.raw.ways_to_self_soothe),
+            SDGData(R.drawable.e_web_goal_14, R.raw.ways_to_self_soothe),
+            SDGData(R.drawable.e_web_goal_15, R.raw.ways_to_self_soothe),
+            SDGData(R.drawable.e_web_goal_16, R.raw.ways_to_self_soothe),
+            SDGData(R.drawable.e_web_goal_17, R.raw.ways_to_self_soothe)
+        )
+
+        SDGsRecyclerView.layoutManager = LinearLayoutManager(this)
+        SDGsRecyclerView.adapter = SDGAdapter(SDGs, this@OdsActivity)
 
         val drawerLayout : DrawerLayout = findViewById(R.id.main)
         val navView : NavigationView = findViewById(R.id.nav_view)
@@ -52,67 +100,14 @@ class OdsActivity : AppCompatActivity() {
         actionBar?.setDisplayShowHomeEnabled(true)
         actionBar?.setDisplayHomeAsUpEnabled(true)
 
-        navView.setNavigationItemSelectedListener {
+        setupExpandableListView(this, this@OdsActivity, jwt_token!!, is_admin!!, header_username!!)
 
-            when(it.itemId){
+    }
 
-                R.id.nav_project -> {
+    override fun onRestart() {
+        super.onRestart()
 
-                    val intent : Intent = Intent(this, ProjectsActivity::class.java)
-
-                    intent.putExtra("jwt_token", jwt_token)
-                    intent.putExtra("is_admin", is_admin)
-                    intent.putExtra("username", header_username)
-
-                    startActivity(intent)
-
-                }
-                R.id.nav_ods -> {}
-                R.id.nav_mobilities -> {
-
-                    val intent : Intent = Intent(this, MobilitiesActivity::class.java)
-
-                    intent.putExtra("jwt_token", jwt_token)
-                    intent.putExtra("is_admin", is_admin)
-                    intent.putExtra("username", header_username)
-
-                    startActivity(intent)
-
-                }
-                R.id.nav_activities -> {
-
-                    val intent : Intent = Intent(this, ActivitiesActivity::class.java)
-                    //intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                    intent.putExtra("jwt_token", jwt_token)
-                    intent.putExtra("is_admin", is_admin)
-                    intent.putExtra("username", header_username)
-
-                    startActivity(intent)
-
-                }
-                R.id.nav_settings -> {
-                    val intent : Intent = Intent(this, SettingsActivity::class.java)
-                    //intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                    intent.putExtra("jwt_token", jwt_token)
-                    intent.putExtra("is_admin", is_admin)
-                    intent.putExtra("username", header_username)
-
-                    startActivity(intent)
-                }
-                R.id.nav_login -> {
-
-                    val intent : Intent = Intent(this, MainActivity::class.java)
-
-                    startActivity(intent)
-
-                }
-
-
-            }
-
-            true
-
-        }
+        setupExpandableListView(this, this@OdsActivity, jwt_token!!, is_admin!!, header_username!!)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

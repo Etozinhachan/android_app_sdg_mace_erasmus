@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Hide arrow for empty groups (no children) -->
+    <item
+        android:state_empty="true"
+        android:drawable="@android:color/transparent" />
+
+    <!-- Expanded state: show 'expand_less' icon -->
+    <item
+        android:state_expanded="true"
+        android:drawable="@drawable/ic_expand_less" />
+
+    <!-- Default (collapsed) state: show 'expand_more' icon -->
+    <item
+        android:state_expanded="false"
+        android:drawable="@drawable/ic_expand_more" />
+
+</selector>
